@@ -1,0 +1,2 @@
+Writer = pandoc.scaffolding.Writer
+
