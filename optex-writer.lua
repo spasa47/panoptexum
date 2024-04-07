@@ -187,3 +187,7 @@ Writer.Inline.Image = function(image)
   return { [[\picw=\hsize\inspic{]], image.src, [[}]] }
 end
 
+
+Writer.Inline.RawInline = function(str)
+  return str.text
+end
