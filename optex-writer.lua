@@ -1,3 +1,11 @@
+local function table_size(table)
+  local ret = 0
+  for _, _ in pairs(table) do
+    ret = ret + 1
+  end
+  return ret
+end
+
 Writer = pandoc.scaffolding.Writer
 
 
@@ -93,3 +101,85 @@ Writer.Block.Figure = function(figure)
   --TODO CAPTION!!!
   return { Writer.Blocks(figure.content) }
 end
+
+local alignments_to_table = {
+  ["AlignLeft"] = "l",
+  ["AlignRight"] = "r",
+  ["AlignCenter"] = "c",
+  ["AlignDefault"] = "l"
+}
+
+local function process_row(row)
+  local ret = {}
+  local cnt = table_size(row.cells)
+  for i, v in ipairs(row.cells) do
+    ret[#ret + 1] = Writer.Blocks(v.content)
+    if i ~= cnt then
+      ret[#ret + 1] = [[ & ]]
+    end
+  end
+  --TODO colspan rowspan alignment
+  return ret
+end
+local function process_header_row(row)
+  local ret = {}
+
+  local cnt = table_size(row.cells)
+  for i, v in ipairs(row.cells) do
+    ret[#ret + 1] = Writer.Blocks(v.content)
+    if i ~= cnt then
+      ret[#ret + 1] = [[ & ]]
+    end
+  end
+  --TODO colspan rowspan alignment
+  return ret
+end
+
+local function flatten(item, result)
+  local result = result or {}   --  create empty table, if none given during initialization
+  if type(item) == 'table' then
+    for k, v in pairs(item) do
+      flatten(v, result)
+    end
+  else
+    result[#result + 1] = item
+  end
+  return result
+end
+
+Writer.Block.Table = function(table)
+  --TODO CAPTION!!!
+  local ret = {}
+  ret[#ret + 1] = [[\table{]]
+
+  for _, v in pairs(table.colspecs) do
+    ret[#ret + 1] = alignments_to_table[v[1]]
+  end
+
+  ret[#ret + 1] = [[}{]]
+
+  local head_size = table_size(table.head.rows)
+  for i, v in ipairs(table.head.rows) do
+    ret[#ret + 1] = process_header_row(v)
+    if i ~= head_size then
+      ret[#ret + 1] = [[ \cr]]
+    else
+      ret[#ret + 1] = [[ \crli\tskip2pt]]
+    end
+    ret[#ret + 1] = pandoc.layout.cr
+  end
+
+  local bodies_size = table_size(table.bodies)
+  for i, v in ipairs(table.bodies) do
+    for ii, vv in ipairs(v.body) do
+      ret[#ret + 1] = process_row(vv)
+      ret[#ret + 1] = [[ \cr]]
+      ret[#ret + 1] = pandoc.layout.cr
+    end
+  end
+
+
+  ret[#ret + 1] = [[}]]
+  return flatten(ret)
+end
+
