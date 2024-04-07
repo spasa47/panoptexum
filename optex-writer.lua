@@ -196,3 +196,7 @@ Writer.Inline.Link = function(link)
   return { [[\ulink]], "[", link.target, "]", [[{]], Writer.Inlines(link.content), [[}]] }
 end
 
+
+Writer.Inline.Space = pandoc.layout.space
+
+
