@@ -191,3 +191,8 @@ end
 Writer.Inline.RawInline = function(str)
   return str.text
 end
+
+Writer.Inline.Link = function(link)
+  return { [[\ulink]], "[", link.target, "]", [[{]], Writer.Inlines(link.content), [[}]] }
+end
+
