@@ -88,3 +88,8 @@ Writer.Block.BulletList = function(bulletList)
   return ret
 end
 
+Writer.Block.Figure = function(figure)
+  -- print_r(figure.content)
+  --TODO CAPTION!!!
+  return { Writer.Blocks(figure.content) }
+end
