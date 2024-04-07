@@ -60,3 +60,31 @@ end
 Writer.Block.HorizontalRule = function(rule)
   return [[\hrule]]
 end
+
+
+Writer.Block.OrderedList = function(orderedList)
+  local ret = {}
+  ret[#ret + 1] = [[\begitems \style n]]
+  ret[#ret + 1] = pandoc.layout.cr
+  for _, v in ipairs(orderedList.content) do
+    ret[#ret + 1] = [[* ]]
+    ret[#ret + 1] = Writer.Blocks(v)
+    ret[#ret + 1] = pandoc.layout.cr
+  end
+  ret[#ret + 1] = [[\enditems]]
+  return ret
+end
+
+Writer.Block.BulletList = function(bulletList)
+  local ret = {}
+  ret[#ret + 1] = [[\begitems \style O]]
+  ret[#ret + 1] = pandoc.layout.cr
+  for _, v in ipairs(bulletList.content) do
+    ret[#ret + 1] = [[* ]]
+    ret[#ret + 1] = Writer.Blocks(v)
+    ret[#ret + 1] = pandoc.layout.cr
+  end
+  ret[#ret + 1] = [[\enditems]]
+  return ret
+end
+
