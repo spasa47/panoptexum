@@ -200,3 +200,19 @@ end
 Writer.Inline.Space = pandoc.layout.space
 
 
+local function group(str)
+  return { [[\begingroup]], str, [[\endgroup{}]] }
+end
+
+Writer.Inline.Emph = function(str)
+  return group([[\it ]] + Writer.Inlines(str.content))
+end
+
+Writer.Inline.Strong = function(str)
+  return group([[\bf ]] + Writer.Inlines(str.content))
+end
+
+Writer.Inline.Strikeout = function(str)
+  return { [[\cancel - {]], Writer.Inlines(str.content), [[}]] }
+end
+
