@@ -44,3 +44,11 @@ Writer.Block.BlockQuote = function(blockQuote)
   return { [[\begblock ]], Writer.Blocks(blockQuote.content), [[\endblock]] }
 end
 
+Writer.Block.CodeBlock = function(codeBlock)
+  --print_r(codeBlock.classes)
+  local ret = [[\begtt]]
+  if #codeBlock.classes >= 1 then
+    ret = ret .. [[\hisyntax{]] .. codeBlock.classes[1] .. [[}]]
+  end
+  return { ret, pandoc.layout.cr, codeBlock.text, [[\endtt]] }
+end
