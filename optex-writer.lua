@@ -40,3 +40,7 @@ Writer.Block.Header = function(header)
   end
 end
 
+Writer.Block.BlockQuote = function(blockQuote)
+  return { [[\begblock ]], Writer.Blocks(blockQuote.content), [[\endblock]] }
+end
+
