@@ -216,3 +216,20 @@ Writer.Inline.Strikeout = function(str)
   return { [[\cancel - {]], Writer.Inlines(str.content), [[}]] }
 end
 
+
+Writer.Inline.Note = function(note)
+  local ret = {}
+  ret[#ret + 1] = [[\fnote{]]
+  local nOfContent = #ret
+  for i, v in ipairs(note.content) do
+    ret[#ret + 1] = Writer.Inlines(v.content)
+    if i ~= nOfContent then
+      ret[#ret + 1] = pandoc.layout.space
+    else
+      ret[#ret + 1] = pandoc.layout.cr
+    end
+  end
+  -- return {[[\fnote{]], Writer.Blocks(note.content), [[}]]}
+  ret[#ret + 1] = [[}]]
+  return ret
+end
