@@ -183,3 +183,7 @@ Writer.Block.Table = function(table)
   return flatten(ret)
 end
 
+Writer.Inline.Image = function(image)
+  return { [[\picw=\hsize\inspic{]], image.src, [[}]] }
+end
+
