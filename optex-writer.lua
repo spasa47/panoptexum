@@ -52,3 +52,7 @@ Writer.Block.CodeBlock = function(codeBlock)
   end
   return { ret, pandoc.layout.cr, codeBlock.text, [[\endtt]] }
 end
+
+Writer.Block.Plain = function(plain)
+  return { Writer.Inlines(plain.content) }
+end
