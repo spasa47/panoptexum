@@ -24,3 +24,19 @@ Writer.Inline.Code = function(code)
   return { [[\code{]], code.text, [[}]] }
 end
 
+
+Writer.Block.Header = function(header)
+  if header.level == 1 then
+    return { [[\chap ]], Writer.Inlines(header.content), pandoc.layout.blankline }
+  end
+  if header.level == 2 then
+    return { [[\sec ]], Writer.Inlines(header.content), pandoc.layout.blankline }
+  end
+  if header.level == 3 then
+    return { [[\secc ]], Writer.Inlines(header.content), pandoc.layout.blankline }
+  end
+  if header.level == 4 then
+    return { [[\seccc ]], Writer.Inlines(header.content), pandoc.layout.blankline }
+  end
+end
+
