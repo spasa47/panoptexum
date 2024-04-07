@@ -56,3 +56,7 @@ end
 Writer.Block.Plain = function(plain)
   return { Writer.Inlines(plain.content) }
 end
+
+Writer.Block.HorizontalRule = function(rule)
+  return [[\hrule]]
+end
