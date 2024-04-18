@@ -1,3 +1,15 @@
+local function flatten(item, result)
+  local result = result or {} --  create empty table, if none given during initialization
+  if type(item) == 'table' then
+    for k, v in pairs(item) do
+      flatten(v, result)
+    end
+  else
+    result[#result + 1] = item
+  end
+  return result
+end
+
 local function table_size(table)
   local ret = 0
   for _, _ in pairs(table) do
