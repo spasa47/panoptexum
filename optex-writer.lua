@@ -44,20 +44,27 @@ Writer.Inline.Code = function(code)
   return { [[\code{]], code.text, [[}]] }
 end
 
+local header_levels = {
+  [1] = [[\chap ]],
+  [2] = [[\sec ]],
+  [3] = [[\secc ]],
+  [4] = [[\seccc ]],
+}
+-- TODO: arbitrary heading levels?
 
 Writer.Block.Header = function(header)
-  if header.level == 1 then
-    return { [[\chap ]], Writer.Inlines(header.content), pandoc.layout.blankline }
+  local ret
+  if header.level <= #header_levels then
+    ret = header_levels[header.level]
+  else
+    ret = {[[\secl]], header.level}
   end
-  if header.level == 2 then
-    return { [[\sec ]], Writer.Inlines(header.content), pandoc.layout.blankline }
-  end
-  if header.level == 3 then
-    return { [[\secc ]], Writer.Inlines(header.content), pandoc.layout.blankline }
-  end
-  if header.level == 4 then
-    return { [[\seccc ]], Writer.Inlines(header.content), pandoc.layout.blankline }
-  end
+  return flatten({
+    ret,
+    pandoc.layout.space,
+    Writer.Inlines(header.content),
+    pandoc.layout.blankline
+  })
 end
 
 Writer.Block.BlockQuote = function(blockQuote)
@@ -147,17 +154,6 @@ local function process_header_row(row)
   return ret
 end
 
-local function flatten(item, result)
-  local result = result or {}   --  create empty table, if none given during initialization
-  if type(item) == 'table' then
-    for k, v in pairs(item) do
-      flatten(v, result)
-    end
-  else
-    result[#result + 1] = item
-  end
-  return result
-end
 
 Writer.Block.Table = function(table)
   --TODO CAPTION!!!
@@ -236,9 +232,7 @@ Writer.Inline.Note = function(note)
   for i, v in ipairs(note.content) do
     ret[#ret + 1] = Writer.Inlines(v.content)
     if i ~= nOfContent then
-      ret[#ret + 1] = pandoc.layout.space
-    else
-      ret[#ret + 1] = pandoc.layout.cr
+      ret[#ret + 1] = pandoc.layout.blankline
     end
   end
   -- return {[[\fnote{]], Writer.Blocks(note.content), [[}]]}
