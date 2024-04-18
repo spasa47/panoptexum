@@ -30,7 +30,7 @@ Writer.Inline.SoftBreak = function(_, opts)
   return pandoc.layout.space
 end
 
-Writer.Inline.LineBreak = pandoc.layout.space
+Writer.Inline.LineBreak = pandoc.layout.cr
 
 Writer.Block.Para = function(para)
   return { Writer.Inlines(para.content), pandoc.layout.cr }
