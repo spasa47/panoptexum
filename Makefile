@@ -5,6 +5,9 @@ PANDOCDATADIR:=~/.local/share/pandoc/
 TEMPLATEDIR:=$(PANDOCDATADIR)templates/
 WRITERDIR:=$(PANDOCDATADIR)writers/
 DEFAULTSDIR:=$(PANDOCDATADIR)defaults/
+PDFFILES=$(wildcard *.pdf)
+TEXFILES=$(PDFFILES:%.pdf=%.tex)
+REFFILES=$(PDFFILES:%.pdf=%.ref)
 
 
 .PHONY: docs
@@ -46,4 +49,4 @@ install_defaults: | $(DEFAULTSDIR)
 
 .PHONY: clean
 clean:
-	rm -rfv $(wildcard *.pdf *.tex *.ref)  
+	rm -rfv $(PDFFILES) $(TEXFILES) $(REFFILES)  
