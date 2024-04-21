@@ -8,6 +8,7 @@ DEFAULTSDIR:=$(PANDOCDATADIR)defaults/
 PDFFILES=$(wildcard *.pdf)
 TEXFILES=$(PDFFILES:%.pdf=%.tex)
 REFFILES=$(PDFFILES:%.pdf=%.ref)
+REPLACEMETS= OpTeX TeX
 
 
 .PHONY: docs
@@ -19,6 +20,9 @@ docs: README.pdf
 %.pdf: %.tex | %.md
 	optex $^
 	optex $^
+
+README.md: docs.md
+	sed $(foreach repl, $(REPLACEMETS), -e 's;\\$(repl)/;$(repl);g') $^ >$@ 
 
 .PHONY: install
 install: ensure_pandoc install_template install_writer install_defaults
