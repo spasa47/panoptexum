@@ -162,3 +162,56 @@ the provided documentation.
 **Update:** So there is an issue [here](https://github.com/jgm/pandoc/issues/8826) that seems to talk about this problem, 
 however it does not seem to have gained much traction...
 
+# Ideas for the future
+
+While I will probably add some of these features in the future, as this is not paid work, it will have to wait for when I have free time to do so.
+
+## Arbitrary heading levels
+
+Currently we support heading levels only up to 4, however many formats might have the limit much higher or have no limit at all.
+Thus it would be prudent to support converting from these languages as well, maybe by creating an \OpTeX/ macro, that would take
+2 arguments:
+
+1. The content of the heading.
+2. The level of the heading.
+
+The macro could then look like so:
+
+```tex
+\def\heading #1 #2 {%
+%the definition of the macro would be here
+}
+```
+This macro would essentially do one of three things:
+
+1. Use an existing heading level if it already exists in \OpTeX/ out of the box.
+2. Use an already defined custom heading level, define by a previous occurence of this macro.
+3. If none of the above are possible, define a new heading level and use it.
+
+There might not be a need for this macro after all, as \OpTeX/ provides the macro `\secl`.
+
+## Figure captions
+
+Currently we are skipping any caption information. \OpTeX/ supports this
+so the writer should as well.
+
+## Columns/rows spanning multiple cells in a table
+
+This is also currently not supported by the writer, though \OpTeX/ supports it.
+
+## Table captions
+
+Same as **Figure captions**
+
+## Both bold and italic text at the same time
+
+- **Bold**
+- *Italic*
+- ***Bitalic***
+
+## Font selection
+
+Add the possibility to select a font.
+
+## Margins and paper size
+
