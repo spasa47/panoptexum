@@ -215,3 +215,41 @@ Add the possibility to select a font.
 
 ## Margins and paper size
 
+# Technical documentation
+
+## Writer
+
+The writer is written in the Lua language.
+
+```lua
+Writer = pandoc.scaffolding.Writer
+```
+
+
+
+[optex-writer.lua](optex-writer.lua)
+
+## Template
+
+The template is written in \TeX/ using \OpTeX/ macros and special pandoc markers.
+
+[optex-template.tex](optex-template.tex)
+
+## Defaults file
+
+The default file is written in the `yaml` format as specified by the Pandoc documentation.
+
+```yaml
+standalone: true
+template: ${USERDATA}/templates/optex-template.tex
+pdf-engine: lualatex
+pdf-engine-opts:
+    - '-fmt optex'
+```
+
+
+
+[^1]: Pandoc note
+
+[^2]: Tohle je optex
+
