@@ -1,0 +1,98 @@
+\useOpTeX
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\fontfam[lm]
+
+\hyperlinks \Blue \Blue
+\outlines0
+\initunifonts
+\addto\_fontfeatures{fallback=emoji;}
+\directlua{luaotfload.add_fallback ("emoji", {"TwemojiMozilla:+colr;"} )}
+\rm
+
+% basically the \author macro from optex, but \author is only defined
+% if we use the \report macro
+\def\panauthor#1{\removelastskip\bigskip
+  {\leftskip=0pt plus1fill \rightskip=\leftskip \it \noindent #1 \par}\nobreak\bigskip
+}
+
+
+\def\newpage{\vfil\supereject}
+
+\def\subtitfont {\scalemain\typoscale[\magstep3/\magstep4]\boldify}
+
+\def\printsubtit #1{%
+  {\leftskip=0pt plus1fill \rightskip=\leftskip%
+  \subtitfont \noindent \scantextokens{#1}\par}%
+  \nobreak\bigskip
+}
+
+\def\subtit{\printsubtit}
+\def\version #1{%
+  {\hfill Version #1}%
+}
+
+
+\margins/1 a4 (2.5,2.5,2,2)cm
+
+\newif\ifreportdefined
+\newif\ifletterdefined
+\newif\ifslidesdefined
+
+
+$if(style)$
+  \qcasesof {$style$}
+  {report} {\report\reportdefinedtrue}
+  {letter} {\letter\letterdefinedtrue}
+  {slides} {\slides\slidesdefinedtrue}
+  \_finc {\errmessage{Style $style$ is not supported!}}
+
+$endif$
+
+$if(title)$
+  \tit {$title$}
+$endif$
+
+$if(subtitle)$
+  \subtit {$subtitle$}
+$endif$
+
+$if(version)$
+  \version {$version$}
+$endif$
+
+$if(author)$
+\ifreportdefined \author{%
+  $for(author)$
+  $author$ \nl%
+  $endfor$
+}
+\else \panauthor {%
+  $for(author)$
+  $author$ \nl%
+  $endfor$
+}
+\fi
+$endif$
+
+
+\newpage
+
+\iniseccc
+
+
+$if(toc)$
+$if(tocname)$
+\nonum\notoc\sec $tocname$
+
+$endif$
+\maketoc
+$endif$
+
+$body$
+
+
+\bye
