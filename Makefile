@@ -12,8 +12,12 @@ REFFILES=$(PDFFILES:%.pdf=%.ref)
 REPLACEMETS= OpTeX TeX
 
 
-.PHONY: docs
-docs: README.pdf
+.PHONY: help
+help: ## Prints help for targets with comments
+	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: docs 
+docs: README.pdf ## Generates documentation as a pdf file
 
 %.tex: %.md | $(TEMPLATEFILE) $(WRITERFILE)
 	pandoc -d $(DEFAULTSFILE) -f markdown -t $(WRITERFILE) $^ --template $(TEMPLATEFILE) >$@
@@ -26,7 +30,7 @@ README.md: docs.md
 	sed $(foreach repl, $(REPLACEMETS), -e 's;\\$(repl)/;$(repl);g') $^ >$@ 
 
 .PHONY: install
-install: ensure_pandoc install_template install_writer install_defaults
+install: ensure_pandoc install_template install_writer install_defaults ## Installs the optex writer
 
 .PHONY: ensure_pandoc
 ensure_pandoc:
@@ -56,5 +60,5 @@ install_defaults: $(DEFAULTSFILE) | $(DEFAULTSDIR) $(WRITERDIR) $(WRITERFILE)
 
 
 .PHONY: clean
-clean:
+clean: ## Cleans working directory, only for development purposes
 	rm -rfv $(PDFFILES) $(TEXFILES) $(REFFILES)  
