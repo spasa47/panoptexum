@@ -99,7 +99,7 @@ OpTeX supports three predefined styles:
 3. slides
 
 You can specify which one you want to use, by setting the metadata field `style` to one of them.
-Alternatively, you can leave the `style` field unset, in which case itt will behave just liek OpTeX by default.
+Alternatively, you can leave the `style` field unset, in which case it will behave just like OpTeX by default.
 
 #### Table of contents
 
@@ -243,13 +243,13 @@ The default file is written in the `yaml` format as specified by the Pandoc docu
 standalone: true
 template: ${USERDATA}/templates/optex-template.tex
 pdf-engine: lualatex
-pdf-engine-opts:
-    - '-fmt optex'
 ```
 
+[optex-default.yaml](optex-default.yaml)
 
 
-[^1]: Pandoc note
 
-[^2]: Tohle je optex
+[^1]: A universal document converter <https://www.pandoc.org/>
+
+[^2]: LuaTeX format with extended plainTeX macros <https://petr.olsak.net/optex/>
 

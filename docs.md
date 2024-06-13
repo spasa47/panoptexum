@@ -243,13 +243,13 @@ The default file is written in the `yaml` format as specified by the Pandoc docu
 standalone: true
 template: ${USERDATA}/templates/optex-template.tex
 pdf-engine: lualatex
-pdf-engine-opts:
-    - '-fmt optex'
 ```
 
+[optex-default.yaml](optex-default.yaml)
 
 
-[^1]: Pandoc note
 
-[^2]: Tohle je optex
+[^1]: A universal document converter <https://www.pandoc.org/>
+
+[^2]: LuaTeX format with extended plainTeX macros <https://petr.olsak.net/optex/>
 
