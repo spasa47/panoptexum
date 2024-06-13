@@ -45,6 +45,9 @@ $(TEMPLATEDIR): $(PANDOCDATADIR)
 $(WRITERDIR): $(PANDOCDATADIR)
 	mkdir -p $@
 
+$(DEFAULTSDIR): $(PANDOCDATADIR)
+	mkdir -p $@
+
 .PHONY: install_template
 install_template: $(TEMPLATEFILE) | $(TEMPLATEDIR)
 	cp -v $^ $(TEMPLATEDIR)$^
