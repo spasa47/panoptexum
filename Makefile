@@ -8,8 +8,8 @@ TEMPLATEDIR:=$(PANDOCDATADIR)/templates/
 WRITERDIR:=$(PANDOCDATADIR)/writers/
 DEFAULTSDIR:=$(PANDOCDATADIR)/defaults/
 PDFFILES=$(wildcard *.pdf)
-TEXFILES=$(PDFFILES:%.pdf=%.tex)
-REFFILES=$(PDFFILES:%.pdf=%.ref)
+TEXFILES=docs.tex
+REFFILES=$(wildcard *.ref)
 REPLACEMETS= OpTeX TeX
 
 
@@ -18,17 +18,19 @@ help: ## Prints help for targets with comments
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: docs 
-docs: README.pdf ## Generates documentation as a pdf file
+docs: README.pdf README.md ## Generates documentation as a pdf file and a markdown file
 
-%.tex: %.md | $(TEMPLATEFILE) $(WRITERFILE)
+docs.tex: docs.md | $(TEMPLATEFILE) $(WRITERFILE)
 	pandoc -d $(DEFAULTSFILE) -f markdown -t $(WRITERFILE) $^ --template $(TEMPLATEFILE) >$@
 
-%.pdf: %.tex | %.md
+README.pdf: docs.tex | docs.md
 	optex $^
 	optex $^
+	mv docs.pdf $@
 
 README.md: docs.md
-	sed $(foreach repl, $(REPLACEMETS), -e 's;\\$(repl)/;$(repl);g') $^ >$@ 
+	sed $(foreach repl, $(REPLACEMETS), -e 's;\\$(repl)/;$(repl);g') $^ >$@
+	sed -i '1 { /^---/ { :a N; /\n---/! ba; d} }' $@
 
 .PHONY: install
 install: ensure_pandoc install_template install_writer install_defaults ## Installs the optex writer
@@ -67,4 +69,4 @@ install_defaults: $(DEFAULTSFILE) $(DEFAULTSSTANDALONEFILE) | $(DEFAULTSDIR) $(W
 
 .PHONY: clean
 clean: ## Cleans working directory, only for development purposes
-	rm -rfv $(PDFFILES) $(TEXFILES) $(REFFILES)  
+	rm -rfv $(PDFFILES) $(TEXFILES) $(REFFILES) README.md
