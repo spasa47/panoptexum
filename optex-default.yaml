@@ -1,5 +1,2 @@
-standalone: true
-template: ${USERDATA}/templates/optex-template.tex
-pdf-engine: lualatex
 writer: <will be replaced>
 wrap: preserve
