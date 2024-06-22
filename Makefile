@@ -29,7 +29,8 @@ README.pdf: docs.tex | docs.md
 	mv docs.pdf $@
 
 README.md: docs.md
-	sed $(foreach repl, $(REPLACEMETS), -e 's;\\$(repl)/;$(repl);g') $^ >$@ 
+	sed $(foreach repl, $(REPLACEMETS), -e 's;\\$(repl)/;$(repl);g') $^ >$@
+	sed -i '1 { /^---/ { :a N; /\n---/! ba; d} }' $@
 
 .PHONY: install
 install: ensure_pandoc install_template install_writer install_defaults ## Installs the optex writer
