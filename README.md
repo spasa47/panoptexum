@@ -240,7 +240,7 @@ There are now two defaults files:
 
 - one for producing standalone versions of OpTeX documents, ready for TeXing,
     - it is this one: [optex-default-standalone.yaml](optex-default-standalone.yaml)
-- and another one for creating non-standalone versions, suitable for beign embedded into other \OpTeX documents.
+- and another one for creating non-standalone versions, suitable for beign embedded into other OpTeX documents.
     - that is this one: [optex-default.yaml](optex-default.yaml)
 
 The defaults files are written in the `yaml` format as specified by the Pandoc documentation.
