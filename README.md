@@ -226,7 +226,6 @@ Writer = pandoc.scaffolding.Writer
 ```
 
 
-
 [optex-writer.lua](optex-writer.lua)
 
 ## Template
@@ -237,16 +236,20 @@ The template is written in TeX using OpTeX macros and special pandoc markers.
 
 ## Defaults file
 
-The default file is written in the `yaml` format as specified by the Pandoc documentation.
+There are now two defaults files:
 
+- one for producing standalone versions of OpTeX documents, ready for TeXing,
+    - it is this one: [optex-default-standalone.yaml](optex-default-standalone.yaml)
+- and another one for creating non-standalone versions, suitable for beign embedded into other \OpTeX documents.
+    - that is this one: [optex-default.yaml](optex-default.yaml)
+
+The defaults files are written in the `yaml` format as specified by the Pandoc documentation.
+For example, here is what it might look like:
 ```yaml
 standalone: true
 template: ${USERDATA}/templates/optex-template.tex
 pdf-engine: lualatex
 ```
-
-[optex-default.yaml](optex-default.yaml)
-
 
 
 [^1]: A universal document converter <https://www.pandoc.org/>

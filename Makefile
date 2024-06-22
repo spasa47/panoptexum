@@ -1,6 +1,7 @@
 TEMPLATEFILE:=optex-template.tex
 WRITERFILE:=optex-writer.lua
 DEFAULTSFILE:=optex-default.yaml
+DEFAULTSSTANDALONEFILE:=optex-default-standalone.yaml
 # PANDOCDATADIR:=~/.local/share/pandoc/
 PANDOCDATADIR:=$(shell pandoc --version | sed -n '/^User data directory: .*/{s/^User data directory: \(.*\)/\1/g;p}')
 TEMPLATEDIR:=$(PANDOCDATADIR)/templates/
@@ -57,9 +58,11 @@ install_writer: $(WRITERFILE) | $(WRITERDIR)
 	cp -v $^ $(WRITERDIR)$^
 
 .PHONY: install_defaults
-install_defaults: $(DEFAULTSFILE) | $(DEFAULTSDIR) $(WRITERDIR) $(WRITERFILE)
+install_defaults: $(DEFAULTSFILE) $(DEFAULTSSTANDALONEFILE) | $(DEFAULTSDIR) $(WRITERDIR) $(WRITERFILE)
 	echo "writer: $(WRITERDIR)$(WRITERFILE)" > $(DEFAULTSDIR)optex.yaml
 	sed '/^writer:.*/d' $(DEFAULTSFILE) >> $(DEFAULTSDIR)optex.yaml
+	echo "writer: $(WRITERDIR)$(WRITERFILE)" > $(DEFAULTSDIR)optex-standalone.yaml
+	sed '/^writer:.*/d' $(DEFAULTSSTANDALONEFILE) >> $(DEFAULTSDIR)optex-standalone.yaml
 
 
 .PHONY: clean
