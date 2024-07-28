@@ -13,6 +13,7 @@ REFFILES=$(wildcard *.ref)
 REPLACEMETS= OpTeX TeX
 
 
+
 .PHONY: help
 help: ## Prints help for targets with comments
 	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -37,6 +38,8 @@ install: ensure_pandoc install_template install_writer install_defaults ## Insta
 
 .PHONY: ensure_pandoc
 ensure_pandoc:
+
+
 
 
 $(PANDOCDATADIR): ensure_pandoc
@@ -70,3 +73,22 @@ install_defaults: $(DEFAULTSFILE) $(DEFAULTSSTANDALONEFILE) | $(DEFAULTSDIR) $(W
 .PHONY: clean
 clean: ## Cleans working directory, only for development purposes
 	rm -rfv $(PDFFILES) $(TEXFILES) $(REFFILES) README.md
+
+
+
+## TESTS
+
+TESTRUNNER:=./test/bats/bin/bats
+TESTDIR:=./test/tests/
+
+.PHONY: test
+test: $(TESTRUNNER) pandoc_tests header_tests ## Runs all tests
+
+
+.PHONY: pandoc_tests
+pandoc_tests: $(TESTDIR)pandoc_tests.bats
+	$(TESTRUNNER) $^
+
+.PHONY: header_tests
+header_tests: pandoc_tests
+	$(TESTRUNNER) $(TESTDIR)/header_tests/header_tests.bats
