@@ -14,6 +14,9 @@ setup() {
   run pandoc -d optex-standalone -f markdown "$TFILE"
   assert_success
   assert_output --partial "$TRESULT"
+  echo "$output" >"${BATS_TEST_TMPDIR}/header_tests_tmp"
+  run optex --output-directory="${BATS_TEST_TMPDIR}" "${BATS_TEST_TMPDIR}/header_tests_tmp"
+  assert_success
 }
 
 @test "Can process level two (section) header" {
@@ -25,6 +28,9 @@ setup() {
   run pandoc -d optex-standalone -f markdown "$TFILE"
   assert_success
   assert_output --partial "$TRESULT"
+  echo "$output" >"${BATS_TEST_TMPDIR}/header_tests_tmp"
+  run optex --output-directory="${BATS_TEST_TMPDIR}" "${BATS_TEST_TMPDIR}/header_tests_tmp"
+  assert_success
 }
 
 
@@ -38,6 +44,9 @@ setup() {
   run pandoc -d optex-standalone -f markdown "$TFILE"
   assert_success
   assert_output --partial "$TRESULT"
+  echo "$output" >"${BATS_TEST_TMPDIR}/header_tests_tmp"
+  run optex --output-directory="${BATS_TEST_TMPDIR}" "${BATS_TEST_TMPDIR}/header_tests_tmp"
+  assert_success
 }
 
 
@@ -51,9 +60,12 @@ setup() {
   run pandoc -d optex-standalone -f markdown "$TFILE"
   assert_success
   assert_output --partial "$TRESULT"
+  echo "$output" >"${BATS_TEST_TMPDIR}/header_tests_tmp"
+  run optex --output-directory="${BATS_TEST_TMPDIR}" "${BATS_TEST_TMPDIR}/header_tests_tmp"
+  assert_success
 }
 
-@test "Can process header level above four ( >= 5..10 )" {
+@test "Can process header levels above four ( >= 5..10 )" {
   for LVL in {5..10}
   do
     TRESULT="\secl${LVL} This is a level ${LVL} header"
@@ -69,6 +81,9 @@ setup() {
     run pandoc -d optex-standalone -f markdown <<<"$TINPUT"
     assert_success
     assert_output --partial "$TRESULT"
+    echo "$output" >"${BATS_TEST_TMPDIR}/header_tests_tmp"
+    run optex --output-directory="${BATS_TEST_TMPDIR}" "${BATS_TEST_TMPDIR}/header_tests_tmp"
+    assert_success
 
   done
 }
