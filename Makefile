@@ -82,7 +82,8 @@ TESTRUNNER:=./test/bats/bin/bats
 TESTDIR:=./test/tests
 TESTS:= pandoc_tests.bats \
 	header_tests/header_tests.bats \
-	para_tests/para_tests.bats
+	para_tests/para_tests.bats \
+	emphasis_tests/emphasis_tests.bats \
 
 .PHONY: test
 test:  ## Runs all tests
