@@ -79,16 +79,11 @@ clean: ## Cleans working directory, only for development purposes
 ## TESTS
 
 TESTRUNNER:=./test/bats/bin/bats
-TESTDIR:=./test/tests/
+TESTDIR:=./test/tests
+TESTS:= pandoc_tests.bats \
+	header_tests/header_tests.bats \
+	para_tests/para_tests.bats
 
 .PHONY: test
-test: $(TESTRUNNER) pandoc_tests header_tests ## Runs all tests
-
-
-.PHONY: pandoc_tests
-pandoc_tests: $(TESTDIR)pandoc_tests.bats
-	$(TESTRUNNER) $^
-
-.PHONY: header_tests
-header_tests: pandoc_tests
-	$(TESTRUNNER) $(TESTDIR)/header_tests/header_tests.bats
+test:  ## Runs all tests
+	$(TESTRUNNER) $(patsubst %.bats,$(TESTDIR)/%.bats,$(TESTS))
