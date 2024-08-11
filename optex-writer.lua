@@ -50,7 +50,6 @@ local header_levels = {
   [3] = [[\secc ]],
   [4] = [[\seccc ]],
 }
--- TODO: arbitrary heading levels?
 
 Writer.Block.Header = function(header)
   local ret
@@ -209,11 +208,11 @@ Writer.Inline.Space = pandoc.layout.space
 
 
 local function group(str)
-  return { [[\begingroup]], str, [[\endgroup{}]] }
+  return { [[{]], str, [[}]] }
 end
 
 Writer.Inline.Emph = function(str)
-  return group([[\it ]] + Writer.Inlines(str.content))
+  return group([[\em ]] + Writer.Inlines(str.content))
 end
 
 Writer.Inline.Strong = function(str)
