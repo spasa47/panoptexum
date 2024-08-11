@@ -200,6 +200,15 @@ Same as **Figure captions**
 - *Italic*
 - ***Bitalic***
 
+This issue has been rectified, by using a small trick. The chapter 1.3.1 of the OpTeX documentation describes
+the macro `\em`, which is perfect for our usage here. Thus this feature has been implemented and the transformations are as such:
+
+| Example input | Writer output | How it looks |
+| :----: | :---: | :---: |
+| `**bold**` | `{\bf  bold}` | **bold** |
+| `*italic*` | `{\em italic}` | *italic* |
+| `***bold italic***` | `{\bf {\em  bold italic}`} | ***bold italic*** |
+
 ## Font selection
 
 Add the possibility to select a font.
