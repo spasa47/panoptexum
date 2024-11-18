@@ -76,7 +76,7 @@ Writer.Block.CodeBlock = function(codeBlock)
   if #codeBlock.classes >= 1 then
     ret = ret .. [[\hisyntax{]] .. codeBlock.classes[1] .. [[}]]
   end
-  return { ret, pandoc.layout.cr, codeBlock.text, [[\endtt]] }
+  return { ret, pandoc.layout.cr, codeBlock.text, pandoc.layout.cr, [[\endtt]] }
 end
 
 Writer.Block.Plain = function(plain)
