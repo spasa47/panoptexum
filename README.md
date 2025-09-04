@@ -215,6 +215,23 @@ Add the possibility to select a font.
 
 ## Margins and paper size
 
+
+# Testing the writer
+
+## Writing tests
+
+Testing is implemented via the amazing [bats framework](https://bats-core.readthedocs.io/).
+Currently, we are using it as a dependency via *git submodules*.
+
+## Running the tests
+
+In order to run the tests, simply type:
+```bash
+make test
+```
+The way to run the tests (meaning the command used to execute the test runner) may be changed in the future from `make`,
+as I have my doubts regarding the usability of `make` across different platforms, mainly those that aren't unix-like, such as MS Windows.
+
 # Technical documentation
 
 ## Writer
