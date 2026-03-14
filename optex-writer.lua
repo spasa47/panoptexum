@@ -72,6 +72,7 @@ end
 
 Writer.Block.CodeBlock = function(codeBlock)
   --print_r(codeBlock.classes)
+  --local hmm = pandoc.utils.highlight(codeBlock)
   local ret = [[\begtt]]
   if #codeBlock.classes >= 1 then
     ret = ret .. [[\hisyntax{]] .. codeBlock.classes[1] .. [[}]]
@@ -223,6 +224,76 @@ Writer.Inline.Strikeout = function(str)
   return { [[\cancel - {]], Writer.Inlines(str.content), [[}]] }
 end
 
+
+Writer.Inline.Underline = function(str)
+  return { [[\underbar{]], Writer.Inlines(str.content), [[}]] }
+end
+
+Writer.Inline.Superscript = function(str)
+  return { [[$^{]], Writer.Inlines(str.content), [[}$]] }
+end
+
+Writer.Inline.Subscript = function(str)
+  return { [[$_{]], Writer.Inlines(str.content), [[}$]] }
+end
+
+Writer.Inline.SmallCaps = function(str)
+  return group([[\caps ]] + Writer.Inlines(str.content))
+end
+
+Writer.Inline.Quoted = function(quoted)
+  if quoted.quotetype == "DoubleQuote" then
+    return { [[``]], Writer.Inlines(quoted.content), [['']] }
+  else
+    return { [[`]], Writer.Inlines(quoted.content), [[']] }
+  end
+end
+
+Writer.Inline.Math = function(math)
+  if math.mathtype == "InlineMath" then
+    return { [[$]], math.text, [[$]] }
+  else
+    return { [[$$]], math.text, [[$$]] }
+  end
+end
+
+Writer.Inline.Span = function(span)
+  return { Writer.Inlines(span.content) }
+end
+
+Writer.Block.LineBlock = function(lineBlock)
+  local ret = {}
+  for i, v in ipairs(lineBlock.content) do
+    ret[#ret + 1] = Writer.Inlines(v)
+    if i ~= #lineBlock.content then
+      ret[#ret + 1] = [[\hfil\break]]
+      ret[#ret + 1] = pandoc.layout.cr
+    end
+  end
+  ret[#ret + 1] = pandoc.layout.cr
+  return ret
+end
+
+Writer.Block.DefinitionList = function(defList)
+  local ret = {}
+  for _, item in ipairs(defList.content) do
+    local term = item[1]
+    local defs = item[2]
+    ret[#ret + 1] = [[{\bf ]]
+    ret[#ret + 1] = Writer.Inlines(term)
+    ret[#ret + 1] = [[}]]
+    ret[#ret + 1] = pandoc.layout.cr
+    for _, def in ipairs(defs) do
+      ret[#ret + 1] = Writer.Blocks(def)
+    end
+    ret[#ret + 1] = pandoc.layout.blankline
+  end
+  return ret
+end
+
+Writer.Block.Div = function(div)
+  return { Writer.Blocks(div.content) }
+end
 
 Writer.Inline.Note = function(note)
   local ret = {}

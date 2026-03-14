@@ -84,6 +84,8 @@ TESTS:= pandoc_tests.bats \
 	header_tests/header_tests.bats \
 	para_tests/para_tests.bats \
 	emphasis_tests/emphasis_tests.bats \
+	inline_tests/inline_tests.bats \
+	block_tests/block_tests.bats \
 
 .PHONY: test
 test:  ## Runs all tests
